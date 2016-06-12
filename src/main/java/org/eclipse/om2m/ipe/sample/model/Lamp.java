@@ -31,10 +31,15 @@ public class Lamp {
     private boolean state = false;
     /** Lamp ID */
     private String lampId;
+
+	/** Lamp posistion X and Y */
+	private int posX, posY;
     
-    public Lamp(String lampId, boolean initState){
+    public Lamp(String lampId, boolean initState, int posX, int posY){
     	this.lampId = lampId;
     	this.state = initState;
+		this.posX = posX;
+		this.posY = posY;
     }
     
 	/**
@@ -64,5 +69,14 @@ public class Lamp {
 	public void setLampId(String lampId) {
 		this.lampId = lampId;
 	}
-	
+
+	public int getPosX() {
+		return posX;
+	}
+
+	public int getPosY() {
+		return posY;
+	}
+
+
 }

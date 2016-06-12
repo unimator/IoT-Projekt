@@ -47,16 +47,20 @@ public class LifeCycleManager {
 	 */
 	public static void start(){
 		Map<String, Lamp> lamps = new HashMap<String, Lamp>();
-		for(int i=0; i<2; i++) {
-			String lampId = Lamp.TYPE+"_"+i;
-			lamps.put(lampId, new Lamp(lampId, false));
+		for(int i=0; i<3; i++) {
+			for(int j=0; j<3; j++) {
+				String lampId = Lamp.TYPE+"_"+i+"_"+j;
+				lamps.put(lampId, new Lamp(lampId, false, i, j));
+			}
 		}
 		SampleModel.setModel(lamps);
 
 		// Create initial resources for the 2 lamps
-		for(int i=0; i<2; i++) {
-			String lampId = Lamp.TYPE+"_"+i;
-			createLampResources(lampId, false, SampleConstants.POA);
+		for(int i=0; i<3; i++) {
+			for(int j=0; j<3; j++) {
+				String lampId = Lamp.TYPE+"_"+i+"_"+j;
+				createLampResources(lampId, false, SampleConstants.POA);
+			}
 		}
 		createLampAll(SampleConstants.POA);			
 

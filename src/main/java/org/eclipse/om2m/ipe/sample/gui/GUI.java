@@ -60,17 +60,18 @@ public class GUI extends JFrame {
     /** GUI Frame */
     static GUI frame;
     /** LAMP_0 LABEL */
-    static JLabel LABEL_LAMP_0 = new JLabel("");
+    static JLabel [][] LABEL_LAMP;
     /** LAMP_1 LABEL */
-    static JLabel LABEL_LAMP_1 = new JLabel("");
+    //static JLabel LABEL_LAMP_1 = new JLabel("");
     /** LAMP_0 ID */
-    static String LAMP_0 = "LAMP_0";
+    static String [][] LAMP;
     /** LAMP_1 ID */
-    static String LAMP_1 = "LAMP_1";
+    //static String LAMP_1 = "LAMP_1";
     static SampleModel.LampObserver lampObserver;
     /**
      * Initiate The GUI.
      */
+
     public static void init() {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -103,137 +104,72 @@ public class GUI extends JFrame {
         setTitle("Sample Simulated IPE");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-500)/2, (screenSize.height-570)/2, 497, 570);
+        setBounds(10, 10, 1000, 780);
 
         contentPanel = new JPanel();
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPanel);
         contentPanel.setLayout(null);
 
+        LABEL_LAMP = new JLabel[3][3];
+
         // Lamp0 Switcher0
-        JPanel panel_Lamp0 = new JPanel();
-        panel_Lamp0.setBounds(10, 5, 319, 260);
-        contentPanel.add(panel_Lamp0);
-        panel_Lamp0.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-        panel_Lamp0.setLayout(null);
-        LABEL_LAMP_0.setIcon(iconLampOFF);
-        LABEL_LAMP_0.setHorizontalTextPosition(SwingConstants.CENTER);
-        LABEL_LAMP_0.setHorizontalAlignment(SwingConstants.CENTER);
-        LABEL_LAMP_0.setBounds(10, 9, 149, 240);
-        panel_Lamp0.add(LABEL_LAMP_0);
+        for(int i=0; i<3; i++){
+            for(int j=0; j<3; ++j)
+            {
+                LABEL_LAMP[i][j] = new JLabel("LAMP_"+i+"_"+j);
+                JPanel panel_Lamp = new JPanel();
+                panel_Lamp.setBounds(i*319, j*260, 319, 260);
+                contentPanel.add(panel_Lamp);
+                panel_Lamp.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+                panel_Lamp.setLayout(null);
+                LABEL_LAMP[i][j].setIcon(iconLampOFF);
+                LABEL_LAMP[i][j].setHorizontalTextPosition(SwingConstants.CENTER);
+                LABEL_LAMP[i][j].setHorizontalAlignment(SwingConstants.CENTER);
+                LABEL_LAMP[i][j].setBounds(10, 9, 149, 240);
+                panel_Lamp.add(LABEL_LAMP[i][j]);
 
-        // Lamp0 Switch Button
-        JButton button_Lamp0 = new JButton();
-        button_Lamp0.setOpaque(false);
-        button_Lamp0.setPressedIcon(iconButtonON);
-        button_Lamp0.setIcon(iconButtonOFF);
-        button_Lamp0.setBounds(187, 44, 122, 155);
-        panel_Lamp0.add(button_Lamp0);
-        button_Lamp0.setMinimumSize(new Dimension(30, 23));
-        button_Lamp0.setMaximumSize(new Dimension(30, 23));
-        button_Lamp0.setPreferredSize(new Dimension(30, 23));
+                // Lamp0 Switch Button
+                JButton button_Lamp = new JButton();
+                button_Lamp.setOpaque(false);
+                button_Lamp.setPressedIcon(iconButtonON);
+                button_Lamp.setIcon(iconButtonOFF);
+                button_Lamp.setBounds(187, 44, 122, 155);
+                panel_Lamp.add(button_Lamp);
+                button_Lamp.setMinimumSize(new Dimension(30, 23));
+                button_Lamp.setMaximumSize(new Dimension(30, 23));
+                button_Lamp.setPreferredSize(new Dimension(30, 23));
 
-        JLabel labelSwitcher0 = new JLabel("Switch LAMP_0");
-        labelSwitcher0.setFont(new Font("Vani", Font.BOLD | Font.ITALIC, 14));
-        labelSwitcher0.setFocusCycleRoot(true);
-        labelSwitcher0.setBorder(null);
-        labelSwitcher0.setAutoscrolls(true);
-        labelSwitcher0.setBounds(187, 199, 118, 29);
-        panel_Lamp0.add(labelSwitcher0);
-        // Listener for Lamp0 Switch Button
-        button_Lamp0.addActionListener(new java.awt.event.ActionListener() {
-            // Button Clicked
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                // Change Lamp0 State
-                new Thread(){
-                    public void run() {
-                        // Send switch request to switch lamp0 state
-                    	SampleMonitor.switchLamp(LAMP_0);
+                JLabel labelSwitcher = new JLabel("LAMP_"+i+"_"+j);
+                labelSwitcher.setFont(new Font("Vani", Font.BOLD | Font.ITALIC, 14));
+                labelSwitcher.setFocusCycleRoot(true);
+                labelSwitcher.setBorder(null);
+                labelSwitcher.setAutoscrolls(true);
+                labelSwitcher.setBounds(187, 199, 118, 29);
+                panel_Lamp.add(labelSwitcher);
+
+                button_Lamp.putClientProperty("i", i);
+                button_Lamp.putClientProperty("j", j);
+
+                // Listener for Lamp0 Switch Button
+                button_Lamp.addActionListener(new java.awt.event.ActionListener() {
+                    // Button Clicked
+                    public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                        new Thread(){
+                            public void run() {
+                                // Send switch request to switch lamp i,j state
+                                int i = (Integer)((JButton)(evt.getSource())).getClientProperty("i");
+                                int j = (Integer)((JButton)(evt.getSource())).getClientProperty("j");
+                                SampleMonitor.switchLamp("LAMP_"+i+"_"+j);
+                            }
+                        }.start();
                     }
-                }.start();
+                });
             }
-        });
-
-
-        // Lamp1 Switcher 1
-        JPanel panel_Lamp1 = new JPanel();
-        panel_Lamp1.setBounds(10, 271, 319, 260);
-        contentPanel.add(panel_Lamp1);
-        panel_Lamp1.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-        panel_Lamp1.setLayout(null);
-
-        LABEL_LAMP_1.setIcon(iconLampOFF);
-        LABEL_LAMP_1.setHorizontalTextPosition(SwingConstants.CENTER);
-        LABEL_LAMP_1.setHorizontalAlignment(SwingConstants.CENTER);
-        LABEL_LAMP_1.setBounds(10, 9, 154, 240);
-        panel_Lamp1.add(LABEL_LAMP_1);
-
-        // Lamp1 Switch Button
-        JButton button_Lamp1 = new JButton();
-        button_Lamp1.setOpaque(false);
-        button_Lamp1.setPressedIcon(iconButtonON);
-        button_Lamp1.setIcon(iconButtonOFF);
-        button_Lamp1.setBounds(187, 44, 122, 156);
-        panel_Lamp1.add(button_Lamp1);
-        button_Lamp1.setMinimumSize(new Dimension(30, 23));
-        button_Lamp1.setMaximumSize(new Dimension(30, 23));
-        button_Lamp1.setPreferredSize(new Dimension(30, 23));
-
-        JLabel labelSwitcher1 = new JLabel("Switch LAMP_1");
-        labelSwitcher1.setFont(new Font("Vani", Font.BOLD | Font.ITALIC, 14));
-        labelSwitcher1.setFocusCycleRoot(true);
-        labelSwitcher1.setBorder(null);
-        labelSwitcher1.setAutoscrolls(true);
-        labelSwitcher1.setBounds(187, 199, 118, 29);
-        panel_Lamp1.add(labelSwitcher1);
-        // Listener for Lamp1 Switch Button
-        button_Lamp1.addActionListener(new java.awt.event.ActionListener() {
-            //Switch Button clicked
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                // Change Lamp1 State
-                new Thread(){
-                    public void run() {
-                        // Send switch request to switch lamp1 state
-                    	SampleMonitor.switchLamp(LAMP_1);
-                    }
-                }.start();
-            }
-        });
-
-        // Switcher All lamps
-        JButton buttonAllLamp = new JButton();
-        buttonAllLamp.setOpaque(false);
-        buttonAllLamp.setPressedIcon(iconButtonON);
-        buttonAllLamp.setIcon(iconButtonOFF);
-        buttonAllLamp.setBounds(339, 190, 145, 168);
-        contentPanel.add(buttonAllLamp);
-        buttonAllLamp.setMinimumSize(new Dimension(30, 23));
-        buttonAllLamp.setMaximumSize(new Dimension(30, 23));
-        buttonAllLamp.setPreferredSize(new Dimension(30, 23));
-
-        JLabel labelSwitchAll = new JLabel("Switch All");
-        labelSwitchAll.setAutoscrolls(true);
-        labelSwitchAll.setFont(new Font("Vani", Font.BOLD | Font.ITALIC, 14));
-        labelSwitchAll.setFocusCycleRoot(true);
-        labelSwitchAll.setBorder(null);
-        labelSwitchAll.setBounds(371, 369, 85, 29);
-        contentPanel.add(labelSwitchAll);
-        // Listener of Switch all Button
-        buttonAllLamp.addActionListener(new java.awt.event.ActionListener() {
-            // Switch Button Clicked
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                // Change all lamps states
-                new Thread(){
-                    public void run(){
-                        // Send switch all request to create a content with the current State
-                    	SampleMonitor.switchAll();
-                    }
-                }.start();
-            }
-        });
+        }
         
         lampObserver = new SampleModel.LampObserver() {
-			
+
 			@Override
 			public void onLampStateChange(String lampId, boolean state) {
 				setLabel(lampId, state);
@@ -249,12 +185,16 @@ public class GUI extends JFrame {
      */
     public static void setLabel(String appId, boolean newState) {
         JLabel label = new JLabel("");
-        if ("LABEL_LAMP_0".endsWith(appId)) {
-            label = LABEL_LAMP_0;
+
+        for(int i=0; i<3; i++) {
+            for(int j=0; j<3; j++){
+                if(("LAMP_"+i+"_"+j).equals(appId)) {
+                    label = LABEL_LAMP[i][j];
+                    break;
+                }
+            }
         }
-        if ("LABEL_LAMP_1".endsWith(appId)) {
-            label = LABEL_LAMP_1;
-        }
+
         if(newState) {
             label.setIcon(iconLampON);
         } else {

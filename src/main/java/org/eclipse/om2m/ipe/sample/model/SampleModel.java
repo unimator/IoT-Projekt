@@ -28,7 +28,11 @@ import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.ipe.sample.model.Lamp;
 
 public class SampleModel {
-	
+
+	public static Map<String, Lamp> getLAMPS() {
+		return LAMPS;
+	}
+
 	private static Map<String,Lamp> LAMPS = new HashMap<String, Lamp>();
 	private static List<LampObserver> OBSERVERS = new ArrayList<LampObserver>();
 	

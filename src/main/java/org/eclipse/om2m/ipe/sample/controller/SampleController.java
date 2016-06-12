@@ -24,6 +24,7 @@ import org.eclipse.om2m.commons.resource.ContentInstance;
 import org.eclipse.om2m.core.service.CseService;
 import org.eclipse.om2m.ipe.sample.RequestSender;
 import org.eclipse.om2m.ipe.sample.constants.SampleConstants;
+import org.eclipse.om2m.ipe.sample.model.Lamp;
 import org.eclipse.om2m.ipe.sample.model.SampleModel;
 import org.eclipse.om2m.ipe.sample.util.ObixUtil;
 
@@ -31,6 +32,7 @@ public class SampleController {
 	
 	public static CseService CSE;
 	protected static String AE_ID;
+	private static boolean prevStatus = false;
 	
 	public static void setLampState(String lampId, boolean value){
 		// Set the value in the "real world" model
@@ -52,25 +54,30 @@ public class SampleController {
 	}
 	
 	public static void toggleLamp(String lampId){
-		boolean newState = !SampleModel.getLampValue(lampId);
+		boolean newState = !getLampState(lampId);
 		setLampState(lampId, newState);
 	}
 	
 	public static void setAllOn(){
-		setLampState(SampleConstants.LAMP_0, true);
-		setLampState(SampleConstants.LAMP_1, true);
+		for(Lamp l : SampleModel.getLAMPS().values())
+		{
+				setLampState(l.getLampId(), true);
+		}
 	}
 	
 	public static void setAllOff(){
-		setLampState(SampleConstants.LAMP_0, false);
-		setLampState(SampleConstants.LAMP_1, false);
+		for(Lamp l : SampleModel.getLAMPS().values())
+		{
+			setLampState(l.getLampId(), false);
+		}
 	}
 	
 	public static void toogleAll(){
-		boolean newState = !(SampleModel.getLampValue(SampleConstants.LAMP_0) 
-				&& SampleModel.getLampValue(SampleConstants.LAMP_1));
-		setLampState(SampleConstants.LAMP_0, newState);
-		setLampState(SampleConstants.LAMP_1, newState);
+		for(Lamp l : SampleModel.getLAMPS().values())
+		{
+			setLampState(l.getLampId(), prevStatus);
+		}
+		prevStatus = !prevStatus;
 	}
 
 	public static void setCse(CseService cse){
