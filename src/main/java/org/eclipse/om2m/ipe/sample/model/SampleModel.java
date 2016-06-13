@@ -89,6 +89,11 @@ public class SampleModel {
 		return LAMPS.get(lampId).getState();
 	}
 
+	public static int getLampUsage(String lampId) {
+		checkLampIdValue(lampId);
+		return LAMPS.get(lampId).getNumberOfUsage();
+	}
+
 	/**
 	 * Check if the provided id is correct
 	 * @param lampId

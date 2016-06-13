@@ -119,7 +119,7 @@ public class LifeCycleManager {
 					SampleConstants.CSE_PREFIX + "/" + appId + "/" + SampleConstants.DESC, null, contentInstance);
 
 			// Create initial contentInstance on the STATE container resource
-			content = ObixUtil.getStateRep(appId, initValue);
+			content = ObixUtil.getStateRep(appId, initValue, SampleModel.getLampUsage(appId));
 			contentInstance.setContent(content);
 			RequestSender.createContentInstance(
 					SampleConstants.CSE_PREFIX + "/" + appId + "/" + SampleConstants.DATA, null, contentInstance);

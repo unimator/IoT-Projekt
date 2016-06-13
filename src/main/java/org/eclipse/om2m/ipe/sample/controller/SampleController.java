@@ -40,13 +40,13 @@ public class SampleController {
 		// Send the information to the CSE
 		String targetID = SampleConstants.CSE_PREFIX + "/" + lampId + "/" + SampleConstants.DATA;
 		ContentInstance cin = new ContentInstance();
-		cin.setContent(ObixUtil.getStateRep(lampId, value));
+		cin.setContent(ObixUtil.getStateRep(lampId, value, SampleModel.getLampUsage(lampId)));
 		cin.setContentInfo(MimeMediaType.OBIX + ":" + MimeMediaType.ENCOD_PLAIN);
 		RequestSender.createContentInstance(targetID, null, cin);
 	}
 	
 	public static String getFormatedLampState(String lampId){
-		return ObixUtil.getStateRep(lampId, getLampState(lampId));
+		return ObixUtil.getStateRep(lampId, getLampState(lampId), SampleModel.getLampUsage(lampId));
 	}
 	
 	public static boolean getLampState(String lampId){

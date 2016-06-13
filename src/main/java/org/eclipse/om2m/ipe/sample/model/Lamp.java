@@ -31,6 +31,8 @@ public class Lamp {
 	private boolean state = false;
 	/** Lamp ID */
 	private String lampId;
+	/** Number of lamp usage */
+	private int numberOfUsage;
 
 	public int timeCounter;
 
@@ -42,6 +44,7 @@ public class Lamp {
 		this.state = initState;
 		this.posX = posX;
 		this.posY = posY;
+		this.numberOfUsage = 0;
 	}
 
 	/**
@@ -56,9 +59,14 @@ public class Lamp {
 	 */
 	public void setState(boolean state) {
 		if(state == true) {
-			timeCounter = 10;
+			numberOfUsage += 1;
+			timeCounter = 2;
 		}
 		this.state = state;
+	}
+
+	public int getNumberOfUsage(){
+		return numberOfUsage;
 	}
 
 	/**

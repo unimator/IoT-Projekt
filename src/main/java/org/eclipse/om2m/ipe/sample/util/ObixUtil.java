@@ -21,12 +21,7 @@ package org.eclipse.om2m.ipe.sample.util;
 
 import org.eclipse.om2m.commons.constants.Constants;
 import org.eclipse.om2m.commons.constants.ShortName;
-import org.eclipse.om2m.commons.obix.Bool;
-import org.eclipse.om2m.commons.obix.Contract;
-import org.eclipse.om2m.commons.obix.Obj;
-import org.eclipse.om2m.commons.obix.Op;
-import org.eclipse.om2m.commons.obix.Str;
-import org.eclipse.om2m.commons.obix.Uri;
+import org.eclipse.om2m.commons.obix.*;
 import org.eclipse.om2m.commons.obix.io.ObixEncoder;
 import org.eclipse.om2m.ipe.sample.constants.Operations;
 import org.eclipse.om2m.ipe.sample.constants.SampleConstants;
@@ -98,13 +93,14 @@ public class ObixUtil {
 	 * @param value - current lamp state
 	 * @return Obix XML representation
 	 */
-	public static String getStateRep(String lampId, boolean value) {
+	public static String getStateRep(String lampId, boolean value, int numberOfUsage) {
 		// oBIX
 		Obj obj = new Obj();
 		obj.add(new Str("type",Lamp.TYPE));
 		obj.add(new Str("location",Lamp.LOCATION));
 		obj.add(new Str("lampId",lampId));
 		obj.add(new Bool("state",value));
+		obj.add(new Int("usage", numberOfUsage));
 		return ObixEncoder.toString(obj);
 	}
 

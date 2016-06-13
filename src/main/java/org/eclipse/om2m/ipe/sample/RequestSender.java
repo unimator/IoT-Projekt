@@ -42,6 +42,7 @@ public class RequestSender {
 	
 	public static ResponsePrimitive createResource(String targetId, String name, Resource resource, int resourceType){
 		RequestPrimitive request = new RequestPrimitive();
+
 		request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
 		request.setTargetId(targetId);
 		request.setResourceType(BigInteger.valueOf(resourceType));
