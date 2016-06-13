@@ -45,13 +45,10 @@ public class SampleModel {
 			@Override
 			public void run() {
 				while (true) {
-					logger.info(LAMPS.values());
 					for (Lamp lamp : LAMPS.values()) {
-						logger.info(lamp.getLampId() + ": timeCounter=" + lamp.timeCounter);
 						if (!lamp.getState()) continue;
 						if (lamp.timeCounter == 0) {
 							setLampState(lamp.getLampId(), false);
-							logger.info("lamp " + lamp.getLampId() + " switched off");
 						}
 						lamp.timeCounter--;
 					}
@@ -62,7 +59,6 @@ public class SampleModel {
 						e.printStackTrace();
 					}
 
-					logger.info("Switching off thread");
 				}
 			}
 		};
