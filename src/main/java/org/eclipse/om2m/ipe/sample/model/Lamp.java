@@ -21,38 +21,43 @@ package org.eclipse.om2m.ipe.sample.model;
 
 public class Lamp {
 
-    /** Default Lamps location */
-    public final static String LOCATION = "Home";
-    /** Toggle */
-    public final static String TOGGLE = "toggle";
-    /** Default Lamps type */
-    public final static String TYPE = "LAMP";
-    /** Lamp state */
-    private boolean state = false;
-    /** Lamp ID */
-    private String lampId;
+	/** Default Lamps location */
+	public final static String LOCATION = "Home";
+	/** Toggle */
+	public final static String TOGGLE = "toggle";
+	/** Default Lamps type */
+	public final static String TYPE = "LAMP";
+	/** Lamp state */
+	private boolean state = false;
+	/** Lamp ID */
+	private String lampId;
+
+	public int timeCounter;
 
 	/** Lamp posistion X and Y */
 	private int posX, posY;
-    
-    public Lamp(String lampId, boolean initState, int posX, int posY){
-    	this.lampId = lampId;
-    	this.state = initState;
+
+	public Lamp(String lampId, boolean initState, int posX, int posY){
+		this.lampId = lampId;
+		this.state = initState;
 		this.posX = posX;
 		this.posY = posY;
-    }
-    
+	}
+
 	/**
 	 * @return the state
 	 */
 	public boolean getState() {
 		return state;
 	}
-	
+
 	/**
 	 * @param state the state to set
 	 */
 	public void setState(boolean state) {
+		if(state == true) {
+			timeCounter = 10;
+		}
 		this.state = state;
 	}
 

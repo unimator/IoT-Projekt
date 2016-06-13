@@ -19,10 +19,6 @@
  *******************************************************************************/
 package org.eclipse.om2m.ipe.sample.controller;
 
-import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.MimeMediaType;
@@ -38,6 +34,10 @@ import org.eclipse.om2m.ipe.sample.model.Lamp;
 import org.eclipse.om2m.ipe.sample.model.SampleModel;
 import org.eclipse.om2m.ipe.sample.util.ObixUtil;
 
+import java.math.BigInteger;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class LifeCycleManager {
 
 	private static Log LOGGER = LogFactory.getLog(LifeCycleManager.class); 
@@ -46,7 +46,7 @@ public class LifeCycleManager {
 	 * Handle the start of the plugin with the resource representation and the GUI
 	 */
 	public static void start(){
-		Map<String, Lamp> lamps = new HashMap<String, Lamp>();
+		Map<String, Lamp> lamps = new ConcurrentHashMap<String, Lamp>();
 		for(int i=0; i<3; i++) {
 			for(int j=0; j<3; j++) {
 				String lampId = Lamp.TYPE+"_"+i+"_"+j;
@@ -68,6 +68,8 @@ public class LifeCycleManager {
 		if(SampleConstants.GUI){
 			GUI.init();
 		}
+
+		SampleModel.switchingOffThread.start();
 
 	}
 

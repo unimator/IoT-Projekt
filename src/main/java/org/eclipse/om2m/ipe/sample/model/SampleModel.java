@@ -19,12 +19,15 @@
  *******************************************************************************/
 package org.eclipse.om2m.ipe.sample.model;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 public class SampleModel {
 
@@ -32,12 +35,43 @@ public class SampleModel {
 		return LAMPS;
 	}
 
-	private static Map<String,Lamp> LAMPS = new HashMap<String, Lamp>();
+	public static Thread switchingOffThread;
+	private static Map<String,Lamp> LAMPS = new ConcurrentHashMap<String, Lamp>();
 	private static List<LampObserver> OBSERVERS = new ArrayList<LampObserver>();
-	
+	private static Log logger = LogFactory.getLog(SampleModel.class);
+
+	static {
+		switchingOffThread = new Thread() {
+			@Override
+			public void run() {
+				while (true) {
+					logger.info(LAMPS.values());
+					for (Lamp lamp : LAMPS.values()) {
+						logger.info(lamp.getLampId() + ": timeCounter=" + lamp.timeCounter);
+						if (!lamp.getState()) continue;
+						if (lamp.timeCounter == 0) {
+							setLampState(lamp.getLampId(), false);
+							logger.info("lamp " + lamp.getLampId() + " switched off");
+						}
+						lamp.timeCounter--;
+					}
+
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+
+					logger.info("Switching off thread");
+				}
+			}
+		};
+
+	}
+
 	private SampleModel(){
 	}
-	
+
 	/**
 	 * Sets the lamp state.
 	 * @param lampId - Application ID
@@ -48,7 +82,7 @@ public class SampleModel {
 		LAMPS.get(lampId).setState(value);
 		notifyObservers(lampId, value);
 	}
-	
+
 	/**
 	 * Gets the direct current lamp state
 	 * @param lampId
@@ -68,19 +102,19 @@ public class SampleModel {
 			throw new BadRequestException("Unknow lamp id");
 		}
 	}
-	
+
 	public static void addObserver(LampObserver obs){
 		if(!OBSERVERS.contains(obs)){
 			OBSERVERS.add(obs);
 		}
 	}
-	
+
 	public static void deleteObserver(LampObserver obs){
 		if(OBSERVERS.contains(obs)){
 			OBSERVERS.remove(obs);
 		}
 	}
-	
+
 	private static void notifyObservers(final String lampId, final boolean state){
 		new Thread(){
 			@Override
@@ -91,7 +125,7 @@ public class SampleModel {
 			}
 		}.start();
 	}
-	
+
 	public interface LampObserver{
 		void onLampStateChange(String lampId, boolean state, int counter);
 	}
@@ -100,5 +134,5 @@ public class SampleModel {
 			Map<String, Lamp> lamps2) {
 		LAMPS = lamps2;
 	}
-	
+
 }
