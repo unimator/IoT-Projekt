@@ -19,13 +19,12 @@
  *******************************************************************************/
 package org.eclipse.om2m.ipe.sample.model;
 
+import org.eclipse.om2m.commons.exceptions.BadRequestException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.eclipse.om2m.commons.exceptions.BadRequestException;
-import org.eclipse.om2m.ipe.sample.model.Lamp;
 
 public class SampleModel {
 
@@ -87,14 +86,14 @@ public class SampleModel {
 			@Override
 			public void run() {
 				for(LampObserver obs: OBSERVERS){
-					obs.onLampStateChange(lampId, state);
+					obs.onLampStateChange(lampId, state, 10);
 				}
 			}
 		}.start();
 	}
 	
-	public static interface LampObserver{
-		void onLampStateChange(String lampId, boolean state);
+	public interface LampObserver{
+		void onLampStateChange(String lampId, boolean state, int counter);
 	}
 
 	public static void setModel(

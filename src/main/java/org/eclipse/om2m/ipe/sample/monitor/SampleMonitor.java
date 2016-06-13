@@ -32,7 +32,7 @@ public class SampleMonitor {
 	 * Switch on or off a specific lamp
 	 * @param lampId
 	 */
-	public static void switchLamp(String lampId){
+	public static void moveDetectedAtLamp(String lampId){
 		SampleController.toggleLamp(lampId);
 	}
 	
