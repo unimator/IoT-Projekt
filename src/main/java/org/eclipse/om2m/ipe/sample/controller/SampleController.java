@@ -31,8 +31,6 @@ import org.eclipse.om2m.ipe.sample.util.ObixUtil;
 public class SampleController {
 	
 	public static CseService CSE;
-	protected static String AE_ID;
-	private static boolean prevStatus = false;
 	
 	public static void setLampState(String lampId, boolean value){
 		// Set the value in the "real world" model
@@ -52,10 +50,12 @@ public class SampleController {
 	public static boolean getLampState(String lampId){
 		return SampleModel.getLampValue(lampId);
 	}
-	
-	public static void toggleLamp(String lampId){
-		boolean newState = !getLampState(lampId);
-		setLampState(lampId, newState);
+	public static int getLampCounter(String lampId){
+		return SampleModel.getLampUsage(lampId);
+	}
+
+	public static void registerMoveDetected(String lampId){
+		setLampState(lampId, true);
 	}
 	
 	public static void setAllOn(){
@@ -70,14 +70,6 @@ public class SampleController {
 		{
 			setLampState(l.getLampId(), false);
 		}
-	}
-	
-	public static void toogleAll(){
-		for(Lamp l : SampleModel.getLAMPS().values())
-		{
-			setLampState(l.getLampId(), prevStatus);
-		}
-		prevStatus = !prevStatus;
 	}
 
 	public static void setCse(CseService cse){

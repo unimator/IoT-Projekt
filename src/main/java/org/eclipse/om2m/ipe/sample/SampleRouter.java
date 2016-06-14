@@ -56,7 +56,7 @@ public class SampleRouter implements InterworkingService{
 				response.setResponseStatusCode(ResponseStatusCode.OK);
 				break;
 			case TOGGLE:
-				SampleController.toggleLamp(lampid);
+				SampleController.registerMoveDetected(lampid);
 				response.setResponseStatusCode(ResponseStatusCode.OK);
 				break;
 			case ALL_ON:
@@ -67,10 +67,6 @@ public class SampleRouter implements InterworkingService{
 				SampleController.setAllOff();
 				response.setResponseStatusCode(ResponseStatusCode.OK);
 				break;
-			case ALL_TOGGLE:
-				SampleController.toogleAll();
-            	response.setResponseStatusCode(ResponseStatusCode.OK);
-            	break;
 			case GET_STATE:
 				// Shall not get there...
 				throw new BadRequestException();

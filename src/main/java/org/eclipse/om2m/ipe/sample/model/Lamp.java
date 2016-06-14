@@ -58,9 +58,9 @@ public class Lamp {
 	 * @param state the state to set
 	 */
 	public void setState(boolean state) {
-		if(state == true) {
+		if(state) {
 			numberOfUsage += 1;
-			timeCounter = 2;
+			timeCounter = 20;
 		}
 		this.state = state;
 	}
@@ -90,6 +90,4 @@ public class Lamp {
 	public int getPosY() {
 		return posY;
 	}
-
-
 }

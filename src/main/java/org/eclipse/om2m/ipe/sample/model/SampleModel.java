@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 
 public class SampleModel {
 
@@ -54,7 +53,7 @@ public class SampleModel {
 					}
 
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(100);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -76,7 +75,7 @@ public class SampleModel {
 	public static void setLampState(final String lampId, boolean value) {
 		checkLampIdValue(lampId);
 		LAMPS.get(lampId).setState(value);
-		notifyObservers(lampId, value);
+		notifyObservers(lampId, value, LAMPS.get(lampId).getNumberOfUsage());
 	}
 
 	/**
@@ -116,12 +115,12 @@ public class SampleModel {
 		}
 	}
 
-	private static void notifyObservers(final String lampId, final boolean state){
+	private static void notifyObservers(final String lampId, final boolean state, final int clickCount){
 		new Thread(){
 			@Override
 			public void run() {
 				for(LampObserver obs: OBSERVERS){
-					obs.onLampStateChange(lampId, state, 10);
+					obs.onLampStateChange(lampId, state, clickCount);
 				}
 			}
 		}.start();

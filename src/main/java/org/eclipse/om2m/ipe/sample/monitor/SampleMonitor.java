@@ -33,14 +33,7 @@ public class SampleMonitor {
 	 * @param lampId
 	 */
 	public static void moveDetectedAtLamp(String lampId){
-		SampleController.toggleLamp(lampId);
+		SampleController.registerMoveDetected(lampId);
 	}
 	
-	/**
-	 * Toggle all lamps 
-	 */
-	public static void switchAll(){
-		SampleController.toogleAll();
-	}
-
 }
